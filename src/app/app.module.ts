@@ -5,14 +5,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
-import { ProductListComponent } from './product-list/product-list.component';
 import { WeatherService } from './services/weather/weather.service';
 import { WeatherChartsComponent } from './weather-charts/weather-charts.component';
-
+import { AgGridAngular } from 'ag-grid-angular';
 
 const routes: Routes = [
   { path: 'weather-charts', component: WeatherChartsComponent },
-  { path: '', component: ProductListComponent },
+  { path: '', component: AppComponent },
 ];
 
 @NgModule({
@@ -20,12 +19,12 @@ const routes: Routes = [
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    AgGridAngular,
     RouterModule.forRoot(routes),
   ],
   declarations: [
     AppComponent,
     TopBarComponent,
-    ProductListComponent,
     WeatherChartsComponent,
   ],
   providers: [WeatherService],

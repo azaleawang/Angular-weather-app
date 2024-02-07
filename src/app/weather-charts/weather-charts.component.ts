@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { WeatherData } from '../services/weather/weather.interfaces'
+import { Forecast } from '../services/weather/weather.interfaces'
 import { WeatherService } from '../services/weather/weather.service';
+import { ColDef } from 'ag-grid-community';
+
 @Component({
   selector: 'app-weather-charts',
   templateUrl: './weather-charts.component.html',
@@ -8,12 +10,20 @@ import { WeatherService } from '../services/weather/weather.service';
 })
 
 export class WeatherChartsComponent implements OnInit {
-  weatherData: WeatherData | null = null;
+  weatherData: Forecast[] | null = null;
   errorMessage: string | null = null;
+  colDefs: ColDef[] = [
+    { field: "make" },
+    { field: "model" },
+    { field: "price" },
+    { field: "electric" }
+  ];
   constructor(private weatherService: WeatherService) {}
 
   ngOnInit(): void {
-    this.weatherService.getWeatherData().subscribe({
+    // TODO: should bu user input
+    const tmpDate =  new Date('2023-10-04')
+    this.weatherService.getWeatherData(tmpDate).subscribe({
       next: (data) => {
         this.weatherData = data;
         console.log(this.weatherData);

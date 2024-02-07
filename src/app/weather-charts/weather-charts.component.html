@@ -1,6 +1,6 @@
 <p>weather-charts works!</p>
-<div *ngIf="weatherData">
-  <div *ngFor="let forecast of weatherData.items[0].forecasts">
+<div *ngIf="weatherData; else noData">
+  <div *ngFor="let forecast of weatherData">
     <h3>{{ forecast.date | date }}</h3>
     <p>Forecast: {{ forecast.forecast }}</p>
     <p>Temperature: {{ forecast.temperature.low }}°C - {{ forecast.temperature.high }}°C</p>
@@ -8,3 +8,8 @@
     <p>Wind: {{ forecast.wind.speed.low }} to {{ forecast.wind.speed.high }} km/h, direction {{ forecast.wind.direction }}</p>
   </div>
 </div>
+
+<!-- ng-template for no data message -->
+<ng-template #noData>
+  <p>No data available</p>
+</ng-template>
