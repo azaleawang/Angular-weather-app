@@ -9,6 +9,7 @@ import { WeatherService } from './services/weather/weather.service';
 import { WeatherChartsComponent } from './weather-charts/weather-charts.component';
 import { AgGridAngular } from 'ag-grid-angular';
 
+
 const routes: Routes = [
   { path: 'weather-charts', component: WeatherChartsComponent },
   { path: '', component: AppComponent },

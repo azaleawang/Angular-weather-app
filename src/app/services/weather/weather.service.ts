@@ -11,7 +11,7 @@ export class WeatherService {
   private baseUrl = 'https://api.data.gov.sg/v1/environment/4-day-weather-forecast';
   constructor(private http: HttpClient) { }
 
-  getWeatherData(inputDate: Date): Observable<Forecast[] | null> {
+  getWeatherData(inputDate: Date): Observable<Forecast[] | undefined> {
     const DAYS = 30;
     // If inputDate is null, then assign it the current date
     inputDate = inputDate ?? new Date();
