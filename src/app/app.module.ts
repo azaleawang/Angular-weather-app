@@ -1,17 +1,17 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { Routes, RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { AppComponent } from './app.component';
-import { TopBarComponent } from './top-bar/top-bar.component';
-import { WeatherService } from './services/weather/weather.service';
-import { WeatherChartsComponent } from './weather-charts/weather-charts.component';
-import { AgGridAngular } from 'ag-grid-angular';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { Routes, RouterModule } from "@angular/router";
+import { ReactiveFormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
+import { AppComponent } from "./app.component";
+import { TopBarComponent } from "./top-bar/top-bar.component";
+import { WeatherService } from "./services/weather/weather.service";
+import { WeatherChartsComponent } from "./weather-charts/weather-charts.component";
+import { AgGridAngular } from "ag-grid-angular";
 
 const routes: Routes = [
-  { path: 'weather-charts', component: WeatherChartsComponent },
-  { path: '', component: AppComponent },
+  { path: "weather-charts", component: WeatherChartsComponent },
+  { path: "", component: AppComponent },
 ];
 
 @NgModule({
@@ -22,11 +22,7 @@ const routes: Routes = [
     AgGridAngular,
     RouterModule.forRoot(routes),
   ],
-  declarations: [
-    AppComponent,
-    TopBarComponent,
-    WeatherChartsComponent,
-  ],
+  declarations: [AppComponent, TopBarComponent, WeatherChartsComponent],
   providers: [WeatherService],
   bootstrap: [AppComponent],
 })

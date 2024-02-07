@@ -1,8 +1,4 @@
 
-interface WeatherData {
-  items: WeatherItem[];
-}
-
 interface WeatherApiResp {
   items: WeatherItem[];
   api_info: ApiInfo;

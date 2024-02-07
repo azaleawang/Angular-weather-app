@@ -1,12 +1,37 @@
 <p>weather-charts works!</p>
 <div *ngIf="weatherData; else noData">
-  <div *ngFor="let forecast of weatherData">
-    <h3>{{ forecast.date | date }}</h3>
-    <p>Forecast: {{ forecast.forecast }}</p>
-    <p>Temperature: {{ forecast.temperature.low }}°C - {{ forecast.temperature.high }}°C</p>
-    <p>Humidity: {{ forecast.relative_humidity.low }}% - {{ forecast.relative_humidity.high }}%</p>
-    <p>Wind: {{ forecast.wind.speed.low }} to {{ forecast.wind.speed.high }} km/h, direction {{ forecast.wind.direction }}</p>
+  <div class="weather-table">
+    <!-- The AG Grid component, with Dimensions, CSS Theme, Row Data, and Column Definition -->
+    <ag-grid-angular
+      style="width: 90vw; height: 500px"
+      [class]="themeClass"
+      [rowData]="rowData"
+      [columnDefs]="colDefs"
+      [defaultColDef]="defaultColDef"
+    >
+    </ag-grid-angular>
   </div>
+<!-- 
+  <div *ngFor="let forecast of weatherData">
+
+    <h3>{{ forecast.date }}</h3>
+    <p>Forecast: {{ forecast.forecast }}</p>
+    <p>
+      Temperature: {{ forecast.temperature.low }}°C -
+      {{ forecast.temperature.high }}°C
+    </p>
+    <p>
+      Humidity: {{ forecast.relative_humidity.low }}% -
+      {{ forecast.relative_humidity.high }}%
+    </p>
+    <p>
+      Wind: {{ forecast.wind.speed.low }} to
+      {{ forecast.wind.speed.high }} km/h, direction
+      {{ forecast.wind.direction }}
+    </p>
+  </div> -->
+
+
 </div>
 
 <!-- ng-template for no data message -->
