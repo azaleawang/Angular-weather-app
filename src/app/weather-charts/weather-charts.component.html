@@ -1,0 +1,10 @@
+<p>weather-charts works!</p>
+<div *ngIf="weatherData">
+  <div *ngFor="let forecast of weatherData.items[0].forecasts">
+    <h3>{{ forecast.date | date }}</h3>
+    <p>Forecast: {{ forecast.forecast }}</p>
+    <p>Temperature: {{ forecast.temperature.low }}°C - {{ forecast.temperature.high }}°C</p>
+    <p>Humidity: {{ forecast.relative_humidity.low }}% - {{ forecast.relative_humidity.high }}%</p>
+    <p>Wind: {{ forecast.wind.speed.low }} to {{ forecast.wind.speed.high }} km/h, direction {{ forecast.wind.direction }}</p>
+  </div>
+</div>
