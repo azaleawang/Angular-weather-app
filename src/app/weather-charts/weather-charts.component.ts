@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Forecast } from '../services/weather/weather.interfaces'
-import { WeatherService } from '../services/weather/weather.service';
-import { ColDef } from 'ag-grid-community';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-quartz.css';
+import { Component, OnInit } from "@angular/core";
+import { Forecast } from "../services/weather/weather.interfaces";
+import { WeatherService } from "../services/weather/weather.service";
+import { ColDef } from "ag-grid-community";
 
 interface tableRow {
   date: string;
@@ -14,52 +12,57 @@ interface tableRow {
 }
 
 @Component({
-  selector: 'app-weather-charts',
-  templateUrl: './weather-charts.component.html',
-  styleUrls: ['./weather-charts.component.css'],
+  selector: "app-weather-charts",
+  templateUrl: "./weather-charts.component.html",
+  styleUrls: ["./weather-charts.component.css"],
 })
-
 export class WeatherChartsComponent implements OnInit {
   themeClass = "ag-theme-quartz";
   weatherData: Forecast[] | undefined;
   errorMessage: string | null = null;
-  tableRows: tableRow[] | undefined;
+  rowData: tableRow[] | undefined;
+
   colDefs: ColDef[] = [
-    { field: "Date" },
-    { field: "Lowest Temperature" },
-    { field: "Highest Temperature" },
-    { field: "Lowest Humidity" },
-    { field: "Highest Humidity" },
+    { field: "date" },
+    { field: "lowTemperature" },
+    { field: "highTemperature" },
+    { field: "lowHumidity" },
+    { field: "highHumidity" },
   ];
 
-  constructor(private weatherService: WeatherService) { }
+  defaultColDef: ColDef = {
+    sortable: true,
+    filter: true,
+  };
 
+  constructor(private weatherService: WeatherService) {}
 
   ngOnInit(): void {
     // TODO: should bu user input
-    const tmpDate = new Date('2023-10-04')
-    this.weatherService.getWeatherData(tmpDate).subscribe({
+    const lastDate = new Date("2023-10-04");
+    this.weatherService.getWeatherData(lastDate).subscribe({
       next: (data) => {
         this.weatherData = data;
-        console.log(this.weatherData);
         this.transformDataForTable();
         // this.transformDataForChart();
       },
       error: (error) => {
         this.errorMessage = error.message;
-        console.error('There was an error!', this.errorMessage);
-      }
+        console.error("There was an error!", this.errorMessage);
+      },
     });
   }
   private transformDataForTable(): void {
     if (this.weatherData) {
-      this.tableRows = this.weatherData.map((forecast: Forecast): tableRow => ({
-        date: forecast.date,
-        lowTemperature: forecast.temperature.low,
-        highTemperature: forecast.temperature.high,
-        lowHumidity: forecast.relative_humidity.low,
-        highHumidity: forecast.relative_humidity.high,
-      }));
+      this.rowData = this.weatherData.map(
+        (forecast: Forecast): tableRow => ({
+          date: forecast.date,
+          lowTemperature: forecast.temperature.low,
+          highTemperature: forecast.temperature.high,
+          lowHumidity: forecast.relative_humidity.low,
+          highHumidity: forecast.relative_humidity.high,
+        })
+      );
     }
   }
 }
