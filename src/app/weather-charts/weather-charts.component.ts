@@ -3,20 +3,7 @@ import { Forecast } from "../services/weather/weather.interfaces";
 import { WeatherService } from "../services/weather/weather.service";
 import { ColDef } from "ag-grid-community";
 import { Chart } from "angular-highcharts";
-
-interface tableRow {
-  date: string;
-  lowTemperature: number;
-  highTemperature: number;
-  lowHumidity: number;
-  highHumidity: number;
-}
-
-interface weatherLineData {
-  date: string;
-  low: number;
-  high: number;
-}
+import { tableRow, weatherLineData } from "./whether-charts.interfaces";
 
 @Component({
   selector: "app-weather-charts",
@@ -26,6 +13,7 @@ interface weatherLineData {
 export class WeatherChartsComponent implements OnInit {
   themeClass = "ag-theme-quartz";
   selectedDate: string;
+  maxDate: string;
   weatherData: Forecast[] | undefined;
   errorMessage: string | null = null;
   rowData: tableRow[] = [];
@@ -35,21 +23,33 @@ export class WeatherChartsComponent implements OnInit {
   temperatureChart: Chart | undefined;
   humidityChart: Chart | undefined;
   colDefs: ColDef[] = [
-    { field: "date" },
-    { field: "lowTemperature" },
-    { field: "highTemperature" },
-    { field: "lowHumidity" },
-    { field: "highHumidity" },
+    { field: "date", flex: 1 },
+    { field: "lowTemperature", flex: 1 },
+    { field: "highTemperature", flex: 1 },
+    { field: "lowHumidity", flex: 1 },
+    { field: "highHumidity", flex: 1 },
   ];
 
   defaultColDef: ColDef = {
     sortable: true,
     filter: true,
+    resizable: true,
+    minWidth: 150,
+    flex: 1,
+    cellStyle: { textAlign: "center" },
   };
+
+  activeTab: string = "lineCharts"; // Default to line charts tab
 
   constructor(private weatherService: WeatherService) {
     this.selectedDate = "2021-09-04";
+    this.maxDate = new Date().toISOString().split("T")[0];
   }
+
+  setActiveTab(tabName: string): void {
+    this.activeTab = tabName;
+  }
+
   ngOnInit(): void {
     this.fetchDataAndRenderCharts();
   }
@@ -69,6 +69,8 @@ export class WeatherChartsComponent implements OnInit {
       error: (error) => {
         this.errorMessage = error.message;
         console.error("There was an error!", this.errorMessage);
+        alert("Fail to retrieve data :(");
+        this.weatherData = undefined;
       },
     });
   }
