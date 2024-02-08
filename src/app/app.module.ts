@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { Routes, RouterModule } from "@angular/router";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from "./app.component";
 import { TopBarComponent } from "./top-bar/top-bar.component";
@@ -20,6 +20,7 @@ const routes: Routes = [
     HttpClientModule,
     ReactiveFormsModule,
     AgGridAngular,
+    FormsModule,
     RouterModule.forRoot(routes),
   ],
   declarations: [AppComponent, TopBarComponent, WeatherChartsComponent],
