@@ -23,7 +23,7 @@ interface weatherLineData {
   templateUrl: "./weather-charts.component.html",
   styleUrls: ["./weather-charts.component.css"],
 })
-export class WeatherChartsComponent {
+export class WeatherChartsComponent implements OnInit {
   themeClass = "ag-theme-quartz";
   selectedDate: string;
   weatherData: Forecast[] | undefined;
@@ -50,13 +50,12 @@ export class WeatherChartsComponent {
   constructor(private weatherService: WeatherService) {
     this.selectedDate = "2021-09-04";
   }
-
-  onDateChange(): void {
-    console.log("Selected date:", this.selectedDate);
+  ngOnInit(): void {
+    this.fetchDataAndRenderCharts();
   }
-  submitDate(): void {
+
+  fetchDataAndRenderCharts(): void {
     const formatDate = new Date(this.selectedDate);
-    console.log(formatDate);
 
     this.weatherService.getWeatherData(formatDate).subscribe({
       next: (data) => {
@@ -73,6 +72,7 @@ export class WeatherChartsComponent {
       },
     });
   }
+
   private transformDataForTable(): void {
     if (this.weatherData) {
       this.rowData = this.weatherData.map(
@@ -171,9 +171,4 @@ export class WeatherChartsComponent {
       ],
     });
   }
-
-  // // add point to chart serie
-  // add() {
-  //   this.chart.addPoint(Math.floor(Math.random() * 10));
-  // }
 }

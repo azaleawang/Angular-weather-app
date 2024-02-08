@@ -7,11 +7,9 @@
         id="selectedDate"
         type="date"
         class="form-control m-0"
-        value="2021-09-14"
         [(ngModel)]="selectedDate"
-        (ngModelChange)="onDateChange()"
       />
-      <button (click)="submitDate()" class="btn btn-dark">Search</button>
+      <button (click)="fetchDataAndRenderCharts()" class="btn btn-dark">Search</button>
     </div>
   </div>
 
