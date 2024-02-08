@@ -82,6 +82,8 @@ export class WeatherChartsComponent implements OnInit {
       error: (error) => {
         this.errorMessage = error.message;
         console.error("There was an error!", this.errorMessage);
+        alert("Fail to retrieve data :(")
+        this.weatherData = undefined;
       },
     });
   }
