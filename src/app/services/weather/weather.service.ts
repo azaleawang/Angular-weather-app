@@ -29,8 +29,9 @@ export class WeatherService {
 
     return forkJoin(requests).pipe(
       map(results => {
-        const flattenForcastData = results.flatMap(data => data.items[0].forecasts).slice(0,30);
-        return flattenForcastData;
+        console.log(results);
+        const flattenForecastData = results.flatMap(data => data.items[0].forecasts).slice(0,30);
+        return flattenForecastData;
       })
     );
   }

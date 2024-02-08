@@ -16,8 +16,9 @@ interface tableRow {
   templateUrl: "./weather-charts.component.html",
   styleUrls: ["./weather-charts.component.css"],
 })
-export class WeatherChartsComponent implements OnInit {
+export class WeatherChartsComponent {
   themeClass = "ag-theme-quartz";
+  selectedDate: string;
   weatherData: Forecast[] | undefined;
   errorMessage: string | null = null;
   rowData: tableRow[] | undefined;
@@ -35,14 +36,23 @@ export class WeatherChartsComponent implements OnInit {
     filter: true,
   };
 
-  constructor(private weatherService: WeatherService) {}
+  constructor(private weatherService: WeatherService) {
+    this.selectedDate = "2021-09-04";
+  }
 
-  ngOnInit(): void {
+  onDateChange(): void {
+    console.log("Selected date:", this.selectedDate);
+  }
+  submitDate(): void {
     // TODO: should bu user input
-    const lastDate = new Date("2023-10-04");
-    this.weatherService.getWeatherData(lastDate).subscribe({
+    const formatDate = new Date(this.selectedDate);
+    console.log(formatDate);
+
+    this.weatherService.getWeatherData(formatDate).subscribe({
       next: (data) => {
         this.weatherData = data;
+        console.log(data);
+
         this.transformDataForTable();
         // this.transformDataForChart();
       },
