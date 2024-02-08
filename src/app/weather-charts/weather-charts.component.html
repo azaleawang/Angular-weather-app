@@ -2,7 +2,6 @@
 <div class="d-flex flex-column justify-content-center align-items-center">
   <div class="col-xl-4 col-md-5 mt-4">
     <div class="input-group mb-3 text-center">
-      <!-- <label class="input-group-text" for="selectedDate"> Search </label> -->
       <input
         id="selectedDate"
         type="date"
@@ -17,8 +16,9 @@
   </div>
 
   <!-- Charts for weather data -->
+  <!-- First check if the data null or undefined (loading) -->
   <div
-    *ngIf="weatherData; else noData"
+    *ngIf="weatherData; else checkDataStatus"
     class="f-flex flex-column w-100 container-lg"
   >
     <p>
@@ -77,11 +77,18 @@
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ng-template for no data message -->
-  <ng-template #noData>
+<!-- Check if weatherData is loading -->
+<ng-template #checkDataStatus>
+  <div *ngIf="weatherData === undefined; else noData">
     <div class="spinner-border text-dark mt-5" role="status">
       <span class="sr-only"></span>
     </div>
-  </ng-template>
-</div>
+  </div>
+</ng-template>
+
+<!-- No data -->
+<ng-template #noData>
+  <div>Sorry, No Weather Forecast Data Available.</div>
+</ng-template>
