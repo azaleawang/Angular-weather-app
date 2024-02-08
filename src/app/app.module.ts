@@ -9,10 +9,11 @@ import { WeatherService } from "./services/weather/weather.service";
 import { WeatherChartsComponent } from "./weather-charts/weather-charts.component";
 import { AgGridAngular } from "ag-grid-angular";
 import { ChartModule } from 'angular-highcharts';
+import { WelcomeComponent } from "./welcome/welcome.component";
 
 const routes: Routes = [
   { path: "weather-charts", component: WeatherChartsComponent },
-  { path: "", component: AppComponent },
+  { path: "", component: WelcomeComponent },
 ];
 
 @NgModule({
@@ -25,7 +26,7 @@ const routes: Routes = [
     ChartModule,
     RouterModule.forRoot(routes),
   ],
-  declarations: [AppComponent, TopBarComponent, WeatherChartsComponent],
+  declarations: [AppComponent, TopBarComponent, WeatherChartsComponent, WelcomeComponent, TopBarComponent],
   providers: [WeatherService],
   bootstrap: [AppComponent],
 })

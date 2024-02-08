@@ -25,6 +25,7 @@
     "angular-highcharts": "^17.0.0",
     "angular-in-memory-web-api": "^0.17.0",
     "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.3",
     "highcharts": "^11.3.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

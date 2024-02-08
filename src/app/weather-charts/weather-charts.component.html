@@ -21,7 +21,10 @@
     *ngIf="weatherData; else noData"
     class="f-flex flex-column w-100 container-lg"
   >
-  <p>Data Range: {{ weatherData[0].date }} ~ {{ weatherData[weatherData.length - 1].date }}</p>
+    <p>
+      Data Range: {{ weatherData[0].date }} ~
+      {{ weatherData[weatherData.length - 1].date }}
+    </p>
 
     <!-- Tab navigation -->
     <ul class="nav nav-tabs">
@@ -77,6 +80,8 @@
 
   <!-- ng-template for no data message -->
   <ng-template #noData>
-    <p>No data available</p>
+    <div class="spinner-border text-dark mt-5" role="status">
+      <span class="sr-only"></span>
+    </div>
   </ng-template>
 </div>
