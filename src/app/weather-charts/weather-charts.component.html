@@ -1,10 +1,87 @@
-<p>weather-charts works!</p>
-<div *ngIf="weatherData">
-  <div *ngFor="let forecast of weatherData.items[0].forecasts">
-    <h3>{{ forecast.date | date }}</h3>
-    <p>Forecast: {{ forecast.forecast }}</p>
-    <p>Temperature: {{ forecast.temperature.low }}°C - {{ forecast.temperature.high }}°C</p>
-    <p>Humidity: {{ forecast.relative_humidity.low }}% - {{ forecast.relative_humidity.high }}%</p>
-    <p>Wind: {{ forecast.wind.speed.low }} to {{ forecast.wind.speed.high }} km/h, direction {{ forecast.wind.direction }}</p>
+<!-- Input for choosing date -->
+<div class="d-flex flex-column justify-content-center align-items-center">
+  <div class="col-xl-4 col-md-5 mt-4">
+    <div class="input-group mb-3 text-center">
+      <!-- <label class="input-group-text" for="selectedDate"> Search </label> -->
+      <input
+        id="selectedDate"
+        type="date"
+        class="form-control m-0"
+        max="{{ maxDate }}"
+        [(ngModel)]="selectedDate"
+      />
+      <button (click)="fetchDataAndRenderCharts()" class="btn btn-dark">
+        Search
+      </button>
+    </div>
   </div>
+
+  <!-- Charts for weather data -->
+  <div
+    *ngIf="weatherData; else noData"
+    class="f-flex flex-column w-100 container-lg"
+  >
+    <p>
+      Data Range: {{ weatherData[0].date }} ~
+      {{ weatherData[weatherData.length - 1].date }}
+    </p>
+
+    <!-- Tab navigation -->
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <button
+          class="nav-link"
+          [ngClass]="{ active: activeTab === 'lineCharts' }"
+          (click)="setActiveTab('lineCharts')"
+        >
+          Line Chart
+        </button>
+      </li>
+      <li class="nav-item">
+        <button
+          class="nav-link"
+          [ngClass]="{ active: activeTab === 'tableChart' }"
+          (click)="setActiveTab('tableChart')"
+        >
+          Table
+        </button>
+      </li>
+    </ul>
+
+    <!-- Tab content -->
+    <div class="tab-content">
+      <!-- Tab 1: Line Charts -->
+      <div
+        class="tab-pane"
+        [ngClass]="{ 'active show': activeTab === 'lineCharts' }"
+      >
+        <div [chart]="temperatureChart" class="p-2 w-100 bg-light"></div>
+        <div [chart]="humidityChart" class="p-2 w-100 bg-light"></div>
+      </div>
+
+      <!-- Tab 2: Table Chart -->
+      <div
+        class="tab-pane"
+        [ngClass]="{ 'active show': activeTab === 'tableChart' }"
+      >
+        <div class="weather-table">
+          <ag-grid-angular
+            style="width: 100%; height: 70vh; margin-bottom: 1em"
+            [class]="themeClass"
+            [rowData]="rowData"
+            [columnDefs]="colDefs"
+            [defaultColDef]="defaultColDef"
+          >
+          </ag-grid-angular>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ng-template for no data message -->
+  <ng-template #noData>
+    <div class="spinner-border text-dark mt-5" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </ng-template>
 </div>

@@ -1,5 +1,5 @@
 
-interface WeatherData {
+interface WeatherApiResp {
   items: WeatherItem[];
   api_info: ApiInfo;
 }
@@ -35,4 +35,4 @@ interface ApiInfo {
   status: string;
 }
 
-export { WeatherData, WeatherItem, Forecast, ApiInfo };
+export { Forecast, WeatherApiResp };

@@ -1,18 +1,19 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { Routes, RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { AppComponent } from './app.component';
-import { TopBarComponent } from './top-bar/top-bar.component';
-import { ProductListComponent } from './product-list/product-list.component';
-import { WeatherService } from './services/weather/weather.service';
-import { WeatherChartsComponent } from './weather-charts/weather-charts.component';
-
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { Routes, RouterModule } from "@angular/router";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
+import { AppComponent } from "./app.component";
+import { TopBarComponent } from "./top-bar/top-bar.component";
+import { WeatherService } from "./services/weather/weather.service";
+import { WeatherChartsComponent } from "./weather-charts/weather-charts.component";
+import { AgGridAngular } from "ag-grid-angular";
+import { ChartModule } from 'angular-highcharts';
+import { WelcomeComponent } from "./welcome/welcome.component";
 
 const routes: Routes = [
-  { path: 'weather-charts', component: WeatherChartsComponent },
-  { path: '', component: ProductListComponent },
+  { path: "weather-charts", component: WeatherChartsComponent },
+  { path: "", component: WelcomeComponent },
 ];
 
 @NgModule({
@@ -20,14 +21,12 @@ const routes: Routes = [
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    AgGridAngular,
+    FormsModule,
+    ChartModule,
     RouterModule.forRoot(routes),
   ],
-  declarations: [
-    AppComponent,
-    TopBarComponent,
-    ProductListComponent,
-    WeatherChartsComponent,
-  ],
+  declarations: [AppComponent, TopBarComponent, WeatherChartsComponent, WelcomeComponent, TopBarComponent],
   providers: [WeatherService],
   bootstrap: [AppComponent],
 })
