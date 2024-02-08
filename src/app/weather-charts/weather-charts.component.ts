@@ -35,17 +35,27 @@ export class WeatherChartsComponent implements OnInit {
   temperatureChart: Chart | undefined;
   humidityChart: Chart | undefined;
   colDefs: ColDef[] = [
-    { field: "date" },
-    { field: "lowTemperature" },
-    { field: "highTemperature" },
-    { field: "lowHumidity" },
-    { field: "highHumidity" },
+    { field: "date", flex: 1 },
+    { field: "lowTemperature", flex: 1 },
+    { field: "highTemperature", flex: 1 },
+    { field: "lowHumidity", flex: 1 },
+    { field: "highHumidity", flex: 1 },
   ];
 
   defaultColDef: ColDef = {
     sortable: true,
     filter: true,
+    resizable: true, 
+    minWidth: 150, 
+    flex: 1,
+    cellStyle: { textAlign: 'center' } 
   };
+
+  activeTab: string = "lineCharts"; // Default to line charts tab
+
+  setActiveTab(tabName: string): void {
+    this.activeTab = tabName;
+  }
 
   constructor(private weatherService: WeatherService) {
     this.selectedDate = "2021-09-04";

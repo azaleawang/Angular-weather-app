@@ -12,7 +12,9 @@
   
 }
 
-
+.ag-header-cell-label {
+  justify-content: center;
+}
 /* Input */
 /* 
 input {
