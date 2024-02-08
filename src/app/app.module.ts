@@ -8,6 +8,7 @@ import { TopBarComponent } from "./top-bar/top-bar.component";
 import { WeatherService } from "./services/weather/weather.service";
 import { WeatherChartsComponent } from "./weather-charts/weather-charts.component";
 import { AgGridAngular } from "ag-grid-angular";
+import { ChartModule } from 'angular-highcharts';
 
 const routes: Routes = [
   { path: "weather-charts", component: WeatherChartsComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     AgGridAngular,
     FormsModule,
+    ChartModule,
     RouterModule.forRoot(routes),
   ],
   declarations: [AppComponent, TopBarComponent, WeatherChartsComponent],

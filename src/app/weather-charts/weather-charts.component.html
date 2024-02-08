@@ -9,7 +9,13 @@
   />
   <button (click)="submitDate()">Show data</button>
 </label>
+
 <div *ngIf="weatherData; else noData">
+  <div [chart]="temperatureChart"></div>
+  <div [chart]="humidityChart"></div>
+
+
+
 
   <div class="weather-table">
     <!-- The AG Grid component, with Dimensions, CSS Theme, Row Data, and Column Definition -->
@@ -23,7 +29,7 @@
     </ag-grid-angular>
   </div>
 
-  <div *ngFor="let forecast of weatherData">
+  <!-- <div *ngFor="let forecast of weatherData">
     <h3>{{ forecast.date }}</h3>
     <p>Forecast: {{ forecast.forecast }}</p>
     <p>
@@ -39,7 +45,7 @@
       {{ forecast.wind.speed.high }} km/h, direction
       {{ forecast.wind.direction }}
     </p>
-  </div>
+  </div> -->
 </div>
 
 <!-- ng-template for no data message -->
