@@ -14,7 +14,7 @@ export class WeatherChartsComponent implements OnInit {
   themeClass = "ag-theme-quartz";
   selectedDate: string;
   maxDate: string;
-  weatherData: Forecast[] | undefined;
+  weatherData: Forecast[] | undefined | null;
   errorMessage: string | null = null;
   rowData: tableRow[] = [];
   temperatureLineData: weatherLineData[] = [];
@@ -59,18 +59,23 @@ export class WeatherChartsComponent implements OnInit {
 
     this.weatherService.getWeatherData(formatDate).subscribe({
       next: (data) => {
-        this.weatherData = data;
         console.log(data);
 
-        this.transformDataForTable();
-        this.transformDataForTemperatureLine();
-        this.transformDataForHumidityLine();
+        if (data?.length === 0) {
+          this.weatherData = null;
+        } else {
+          this.weatherData = data;
+
+          this.transformDataForTable();
+          this.transformDataForTemperatureLine();
+          this.transformDataForHumidityLine();
+        }
       },
       error: (error) => {
         this.errorMessage = error.message;
         console.error("There was an error!", this.errorMessage);
         alert("Fail to retrieve data :(");
-        this.weatherData = undefined;
+        this.weatherData = null;
       },
     });
   }
