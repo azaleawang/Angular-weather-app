@@ -7,6 +7,7 @@
         id="selectedDate"
         type="date"
         class="form-control m-0"
+        max="{{ maxDate }}"
         [(ngModel)]="selectedDate"
       />
       <button (click)="fetchDataAndRenderCharts()" class="btn btn-dark">
@@ -20,6 +21,8 @@
     *ngIf="weatherData; else noData"
     class="f-flex flex-column w-100 container-lg"
   >
+  <p>Data Range: {{ weatherData[0].date }} ~ {{ weatherData[weatherData.length - 1].date }}</p>
+
     <!-- Tab navigation -->
     <ul class="nav nav-tabs">
       <li class="nav-item">

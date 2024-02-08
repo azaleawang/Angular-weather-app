@@ -26,6 +26,7 @@ interface weatherLineData {
 export class WeatherChartsComponent implements OnInit {
   themeClass = "ag-theme-quartz";
   selectedDate: string;
+  maxDate: string;
   weatherData: Forecast[] | undefined;
   errorMessage: string | null = null;
   rowData: tableRow[] = [];
@@ -45,21 +46,23 @@ export class WeatherChartsComponent implements OnInit {
   defaultColDef: ColDef = {
     sortable: true,
     filter: true,
-    resizable: true, 
-    minWidth: 150, 
+    resizable: true,
+    minWidth: 150,
     flex: 1,
-    cellStyle: { textAlign: 'center' } 
+    cellStyle: { textAlign: "center" },
   };
 
   activeTab: string = "lineCharts"; // Default to line charts tab
+
+  constructor(private weatherService: WeatherService) {
+    this.selectedDate = "2021-09-04";
+    this.maxDate = new Date().toISOString().split('T')[0];
+  }
 
   setActiveTab(tabName: string): void {
     this.activeTab = tabName;
   }
 
-  constructor(private weatherService: WeatherService) {
-    this.selectedDate = "2021-09-04";
-  }
   ngOnInit(): void {
     this.fetchDataAndRenderCharts();
   }
