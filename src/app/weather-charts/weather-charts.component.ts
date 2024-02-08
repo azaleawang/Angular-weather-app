@@ -3,20 +3,7 @@ import { Forecast } from "../services/weather/weather.interfaces";
 import { WeatherService } from "../services/weather/weather.service";
 import { ColDef } from "ag-grid-community";
 import { Chart } from "angular-highcharts";
-
-interface tableRow {
-  date: string;
-  lowTemperature: number;
-  highTemperature: number;
-  lowHumidity: number;
-  highHumidity: number;
-}
-
-interface weatherLineData {
-  date: string;
-  low: number;
-  high: number;
-}
+import { tableRow, weatherLineData } from "./whether-charts.interfaces";
 
 @Component({
   selector: "app-weather-charts",
@@ -56,7 +43,7 @@ export class WeatherChartsComponent implements OnInit {
 
   constructor(private weatherService: WeatherService) {
     this.selectedDate = "2021-09-04";
-    this.maxDate = new Date().toISOString().split('T')[0];
+    this.maxDate = new Date().toISOString().split("T")[0];
   }
 
   setActiveTab(tabName: string): void {
@@ -82,7 +69,7 @@ export class WeatherChartsComponent implements OnInit {
       error: (error) => {
         this.errorMessage = error.message;
         console.error("There was an error!", this.errorMessage);
-        alert("Fail to retrieve data :(")
+        alert("Fail to retrieve data :(");
         this.weatherData = undefined;
       },
     });
