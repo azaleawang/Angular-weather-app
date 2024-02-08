@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Forecast } from "../services/weather/weather.interfaces";
 import { WeatherService } from "../services/weather/weather.service";
 import { ColDef } from "ag-grid-community";
+import { Chart } from "angular-highcharts";
 
 interface tableRow {
   date: string;
@@ -11,18 +12,28 @@ interface tableRow {
   highHumidity: number;
 }
 
+interface weatherLineData {
+  date: string;
+  low: number;
+  high: number;
+}
+
 @Component({
   selector: "app-weather-charts",
   templateUrl: "./weather-charts.component.html",
   styleUrls: ["./weather-charts.component.css"],
 })
-export class WeatherChartsComponent {
+export class WeatherChartsComponent implements OnInit {
   themeClass = "ag-theme-quartz";
   selectedDate: string;
   weatherData: Forecast[] | undefined;
   errorMessage: string | null = null;
-  rowData: tableRow[] | undefined;
+  rowData: tableRow[] = [];
+  temperatureLineData: weatherLineData[] = [];
+  humidityLineData: weatherLineData[] = [];
 
+  temperatureChart: Chart | undefined;
+  humidityChart: Chart | undefined;
   colDefs: ColDef[] = [
     { field: "date" },
     { field: "lowTemperature" },
@@ -39,14 +50,12 @@ export class WeatherChartsComponent {
   constructor(private weatherService: WeatherService) {
     this.selectedDate = "2021-09-04";
   }
-
-  onDateChange(): void {
-    console.log("Selected date:", this.selectedDate);
+  ngOnInit(): void {
+    this.fetchDataAndRenderCharts();
   }
-  submitDate(): void {
-    // TODO: should bu user input
+
+  fetchDataAndRenderCharts(): void {
     const formatDate = new Date(this.selectedDate);
-    console.log(formatDate);
 
     this.weatherService.getWeatherData(formatDate).subscribe({
       next: (data) => {
@@ -54,7 +63,8 @@ export class WeatherChartsComponent {
         console.log(data);
 
         this.transformDataForTable();
-        // this.transformDataForChart();
+        this.transformDataForTemperatureLine();
+        this.transformDataForHumidityLine();
       },
       error: (error) => {
         this.errorMessage = error.message;
@@ -62,6 +72,7 @@ export class WeatherChartsComponent {
       },
     });
   }
+
   private transformDataForTable(): void {
     if (this.weatherData) {
       this.rowData = this.weatherData.map(
@@ -74,5 +85,90 @@ export class WeatherChartsComponent {
         })
       );
     }
+  }
+
+  private transformDataForTemperatureLine(): void {
+    if (this.weatherData) {
+      this.temperatureLineData = this.weatherData.map(
+        (forecast: Forecast): weatherLineData => ({
+          date: forecast.date,
+          low: forecast.temperature.low,
+          high: forecast.temperature.high,
+        })
+      );
+    }
+
+    this.temperatureChart = new Chart({
+      chart: {
+        type: "line",
+      },
+      title: {
+        text: "30-day Temperature",
+      },
+      credits: {
+        enabled: false,
+      },
+      xAxis: {
+        type: "category",
+      },
+      yAxis: {
+        title: {
+          text: "Temperature (°C)",
+        },
+      },
+      series: [
+        {
+          name: "Low",
+          data: this.temperatureLineData.map((temp) => [temp.date, temp.low]),
+        } as any,
+        {
+          name: "High",
+          data: this.temperatureLineData.map((temp) => [temp.date, temp.high]),
+        } as any,
+      ],
+    });
+  }
+
+  private transformDataForHumidityLine(): void {
+    if (this.weatherData) {
+      this.temperatureLineData = this.weatherData.map(
+        (forecast: Forecast): weatherLineData => ({
+          date: forecast.date,
+          low: forecast.relative_humidity.low,
+          high: forecast.relative_humidity.high,
+        })
+      );
+    }
+
+    this.humidityChart = new Chart({
+      chart: {
+        type: "line",
+      },
+      title: {
+        text: "30-day Relative Humidity",
+      },
+      credits: {
+        enabled: false,
+      },
+      xAxis: {
+        type: "category",
+      },
+      yAxis: {
+        max: 100,
+        title: {
+          text: "Humidity",
+        },
+      },
+      series: [
+        {
+          name: "Low",
+          data: this.temperatureLineData.map((temp) => [temp.date, temp.low]),
+        } as any,
+        {
+          name: "High",
+          data: this.temperatureLineData.map((temp) => [temp.date, temp.high]),
+        } as any,
+      ],
+    });
   }
 }
