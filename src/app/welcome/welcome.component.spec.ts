@@ -1,10 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { RouterLink } from '@angular/router';
-
 import { WelcomeComponent } from "./welcome.component";
 import { RouterTestingModule } from "@angular/router/testing";
-import { DebugElement } from '@angular/core';
-import { By } from "@angular/platform-browser";
 
 describe("WelcomeComponent", () => {
   let component: WelcomeComponent;

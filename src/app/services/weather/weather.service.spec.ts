@@ -59,10 +59,10 @@ describe("Weather Service", () => {
     httpClientSpy = TestBed.inject(HttpClient) as jasmine.SpyObj<HttpClient>;
   });
 
-  describe("getWeatherForecast()", () => {
+  describe("fetchWeatherForecast()", () => {
     it("should return expected array of weather forecasts", (done: DoneFn) => {
       httpClientSpy.get.and.returnValue(of(mockApiResponse));
-      weatherService.getWeatherForecast(inputDate).subscribe({
+      weatherService.fetchWeatherForecast(inputDate).subscribe({
         next: (data) => {
           expect(data).toEqual(mockApiResponse);
           done();
@@ -77,12 +77,12 @@ describe("Weather Service", () => {
 
   describe("fetchMultipleWeatherForecast()", () => {
     it("should make the correct number of requests", (done: DoneFn) => {
-      httpClientSpy.get.and.returnValue(of(mockApiResponse)); // Mock the HTTP response
+      httpClientSpy.get.and.returnValue(of(mockApiResponse));
 
-      weatherService.fetchMultipleWeatherForecast(inputDate, 4).subscribe({
+      weatherService.fetchMultipleWeatherForecast(inputDate, 8).subscribe({
         next: (results) => {
-          expect(results.length).toBe(1);
-          expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
+          expect(results.length).toBe(2);
+          expect(httpClientSpy.get).toHaveBeenCalledTimes(2);
           done();
         },
         error: done.fail,
@@ -96,17 +96,17 @@ describe("Weather Service", () => {
         [mockApiResponse],
         new Date("2024-01-11")
       );
-      expect(transformedData).toEqual(FORECASTS); // Assuming FORECASTS matches the transformation logic
+      expect(transformedData).toEqual(FORECASTS);
     });
   });
 
   describe("getWeatherData()", () => {
     it("should fetch and transform weather data correctly", (done: DoneFn) => {
-      httpClientSpy.get.and.returnValue(of(mockApiResponse)); // Mock the HTTP response for multiple periods
+      httpClientSpy.get.and.returnValue(of(mockApiResponse));
 
       weatherService.getWeatherData(inputDate, 4).subscribe({
         next: (data) => {
-          expect(data).toEqual(FORECASTS); // The final data should match the transformed forecasts
+          expect(data).toEqual(FORECASTS);
           done();
         },
         error: done.fail,
