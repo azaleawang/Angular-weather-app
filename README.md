@@ -1,10 +1,7 @@
 # Angular-weather-app
-## **Technologies Used**
-
 This is my first Angular project 😃
 
-
-
+## **Technologies Used**
 - **ag-Grid**: To display weather data in a tabular format.
 - **Highcharts**: Used for plotting temperature and humidity trend charts.
 - **Bootstrap**: For styling and responsive web design.
@@ -28,4 +25,10 @@ ng test
 
 ## **Routes**
 - **`/`**: The welcome page with instructions and the option to navigate to the weather charts.
+  ![welcome](https://github.com/azaleawang/Angular-weather-app/assets/46614777/48b261e6-85f7-4897-83f7-cd09570df20d)
+
 - **`/weather-charts`**: Displays the weather line charts and table.
+  ![line](https://github.com/azaleawang/Angular-weather-app/assets/46614777/4af3a7ab-693a-45f1-9402-f5a240d7b271)
+  ![table](https://github.com/azaleawang/Angular-weather-app/assets/46614777/3ce61a2d-0c5f-46f3-a250-20c0ce770a16)
+
+
