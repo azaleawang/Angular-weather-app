@@ -56,6 +56,7 @@ export class WeatherChartsComponent implements OnInit {
 
   fetchDataAndRenderCharts(): void {
     const formatDate = new Date(this.selectedDate);
+    this.weatherData = undefined;
 
     this.weatherService.getWeatherData(formatDate).subscribe({
       next: (data) => {
