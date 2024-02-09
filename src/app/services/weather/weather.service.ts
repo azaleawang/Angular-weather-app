@@ -13,25 +13,30 @@ export class WeatherService {
   private DAYS = 30;
   constructor(private http: HttpClient) {}
 
-  getWeatherForecast(inputDate: Date): Observable<WeatherApiResp> {
+  // fetch weather forecast one time
+  fetchWeatherForecast(inputDate: Date): Observable<WeatherApiResp> {
     const apiUrl = `${this.baseUrl}?date=${
       inputDate.toISOString().split("T")[0]
     }`;
     return this.http.get<WeatherApiResp>(apiUrl);
   }
 
+  // fetch weather forecast multiple times
   fetchMultipleWeatherForecast(
     startDate: Date,
     days: number = this.DAYS
   ): Observable<WeatherApiResp[]> {
     let requests: Observable<WeatherApiResp>[] = [];
+    // fetch 4 days at a time, repeating until the number of days is reached
     for (let i = 0; i < Math.ceil(days / 4); i++) {
-      requests.push(this.getWeatherForecast(startDate));
+      requests.push(this.fetchWeatherForecast(startDate));
       startDate.setDate(startDate.getDate() + 4);
     }
+
     return forkJoin(requests);
   }
 
+  // Transforms weather forecast data to a flatten array
   transformWeatherForecast(
     results: WeatherApiResp[],
     inputDate: Date
@@ -41,6 +46,7 @@ export class WeatherService {
       .filter((forecast) => new Date(forecast?.date) <= inputDate);
   }
 
+  // get 30 day weather forecast given input date
   getWeatherData(
     inputDate: Date,
     days: number = this.DAYS
@@ -48,6 +54,7 @@ export class WeatherService {
     inputDate = inputDate ?? new Date();
     let startDate: Date = new Date(inputDate);
     startDate.setDate(startDate.getDate() - days);
+
     return this.fetchMultipleWeatherForecast(startDate, days).pipe(
       map((results) => this.transformWeatherForecast(results, inputDate))
     );
