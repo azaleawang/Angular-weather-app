@@ -10,33 +10,46 @@ import { map } from "rxjs/operators";
 export class WeatherService {
   private baseUrl =
     "https://api.data.gov.sg/v1/environment/4-day-weather-forecast";
+  private DAYS = 30;
   constructor(private http: HttpClient) {}
 
-  getWeatherData(inputDate: Date): Observable<Forecast[] | undefined> {
-    const DAYS = 30;
-    // If inputDate is null, then assign it the current date
-    inputDate = inputDate ?? new Date();
+  getWeatherForecast(inputDate: Date): Observable<WeatherApiResp> {
+    const apiUrl = `${this.baseUrl}?date=${
+      inputDate.toISOString().split("T")[0]
+    }`;
+    return this.http.get<WeatherApiResp>(apiUrl);
+  }
 
-    let startDate: Date = new Date(inputDate);
-    startDate.setDate(inputDate.getDate() - DAYS);
-
-    const requests = [];
-    for (let i = 0; i < Math.ceil(DAYS / 4); i++) {
-      const dateString = startDate.toISOString().split("T")[0];
-      const apiUrl = `${this.baseUrl}?date=${dateString}`;
-      requests.push(this.http.get<WeatherApiResp>(apiUrl));
+  fetchMultipleWeatherForecast(
+    startDate: Date,
+    days: number = this.DAYS
+  ): Observable<WeatherApiResp[]> {
+    let requests: Observable<WeatherApiResp>[] = [];
+    for (let i = 0; i < Math.ceil(days / 4); i++) {
+      requests.push(this.getWeatherForecast(startDate));
       startDate.setDate(startDate.getDate() + 4);
     }
+    return forkJoin(requests);
+  }
 
-    return forkJoin(requests).pipe(
-      map((results) => {
-        console.log(results);
-        const flattenForecastData = results
-          .flatMap((data) => data.items[0]?.forecasts)
-          .filter((forecast) => new Date(forecast?.date) <= inputDate);
+  transformWeatherForecast(
+    results: WeatherApiResp[],
+    inputDate: Date
+  ): Forecast[] | undefined {
+    return results
+      .flatMap((result) => result.items[0]?.forecasts)
+      .filter((forecast) => new Date(forecast?.date) <= inputDate);
+  }
 
-        return flattenForecastData;
-      })
+  getWeatherData(
+    inputDate: Date,
+    days: number = this.DAYS
+  ): Observable<Forecast[] | undefined> {
+    inputDate = inputDate ?? new Date();
+    let startDate: Date = new Date(inputDate);
+    startDate.setDate(startDate.getDate() - days);
+    return this.fetchMultipleWeatherForecast(startDate, days).pipe(
+      map((results) => this.transformWeatherForecast(results, inputDate))
     );
   }
 }
